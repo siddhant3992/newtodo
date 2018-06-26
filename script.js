@@ -146,5 +146,23 @@ function updateItem() {
             listItem.appendChild(rmIcon);
         }
     }
+    //progress bar
+    if (arr.length !== 0) {
+        var count = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].checkb == true) {
+                count++;
+            }
+        }
+        var progress = Math.round(count / arr.length * 100);
+
+        document.querySelector(".completion").style.width = progress + "%";
+        document.querySelector(".task-completion").innerHTML = progress + "%" + " completed";
+        document.querySelector(".task-completion").style.color = "white";
+    } else {
+        document.querySelector(".completion").style.width = "100%";
+        document.querySelector(".task-completion").style.color = "transparent";
+    }
+
 
 }
