@@ -25,7 +25,12 @@ updateItem();
 var count = 1;
 if (window.localStorage.todos) {
     arrayItem = JSON.parse(localStorage.getItem('todos'));
-    count = arrayItem.length + 1;
+    for(i =0; i<arrayItem.length; i++){
+        if(arrayItem[i].itemId > count){
+            count = arrayItem[i].itemId;
+        }
+    }
+    count++;
 }
 
 
@@ -79,6 +84,7 @@ document.body.addEventListener("click", function (ev) {
                 arr.splice(i, 1);
             }
         }
+        arrayItem = arr;
         localStorage.setItem('todos', JSON.stringify(arr));
         updateItem();
     }
@@ -118,6 +124,12 @@ function updateItem() {
         for (var i = 0; i < arr.length; i++) {
             var ul = document.getElementById('todoUl');
             var listItem = document.createElement('li');
+            listItem.id = arr[i].itemId;
+            listItem.draggable=true;
+            listItem.setAttribute('ondragstart','dragstart_handler(event)');
+            listItem.setAttribute('ondragover','dragover_handler(event)');
+            listItem.setAttribute('ondrop','drop_handler(event)');
+
             var checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = arr[i].checkb;
@@ -165,4 +177,34 @@ function updateItem() {
     }
 
 
+}
+
+//dragging operations
+var index1;
+function dragstart_handler(ev) {
+    start = ev.target.id;
+}
+
+function dragover_handler(ev) {
+   ev.preventDefault();
+   drop = ev.target.id;
+}
+
+function drop_handler(ev) {
+    let startIndex =0;
+    let dropIndex =0;
+    var arr = JSON.parse(localStorage.getItem('todos'));
+    for (var i = 0; i < arr.length; i++) {
+        if(arr[i].itemId == start){
+            startIndex =i;
+        }
+        if(arr[i].itemId == drop){
+            dropIndex =i;
+        }
+    }
+    var temp = arr[startIndex];
+    arr.splice(startIndex,1);
+    arr.splice(dropIndex,0,temp);
+    localStorage.setItem('todos', JSON.stringify(arr));
+    updateItem();
 }
