@@ -1,9 +1,13 @@
+//-----------main array for storing data in local storage.-------
 var arrayItem = [];
 
+
+//-----------submit button to add new item------------
 var btn = document.getElementById('button');
 btn.addEventListener('click', addItem);
 
-//enter key submit
+
+//------------enter key submit-------------
 textItem.onkeypress = function () {
 
     if (event.which == 13) {
@@ -25,8 +29,8 @@ updateItem();
 var count = 1;
 if (window.localStorage.todos) {
     arrayItem = JSON.parse(localStorage.getItem('todos'));
-    for(i =0; i<arrayItem.length; i++){
-        if(arrayItem[i].itemId > count){
+    for (i = 0; i < arrayItem.length; i++) {
+        if (arrayItem[i].itemId > count) {
             count = arrayItem[i].itemId;
         }
     }
@@ -43,31 +47,19 @@ document.body.addEventListener("click", function () {
     if (event.target.getAttribute("type") == "checkbox") {
         var chekb = document.getElementById(event.target.id);
         // console.log(chekb.checked);
-        if (chekb.checked) {
-            var arr = JSON.parse(localStorage.getItem('todos'));
-
-            for (var i = 0; i < arr.length; i++) {
-
-                if (event.target.id == arr[i].itemId) {
+        var arr = JSON.parse(localStorage.getItem('todos'));
+        for (var i = 0; i < arr.length; i++) {
+            if (event.target.id == arr[i].itemId) {
+                if (arr[i].checkb) {
+                    arr[i].checkb = false;
+                } else {
                     arr[i].checkb = true;
                 }
             }
-            localStorage.setItem('todos', JSON.stringify(arr));
-        } else {
-            var arr = JSON.parse(localStorage.getItem('todos'));
-
-            for (var i = 0; i < arr.length; i++) {
-
-                if (event.target.id == arr[i].itemId) {
-                    arr[i].checkb = false;
-                }
-            }
-            localStorage.setItem('todos', JSON.stringify(arr));
         }
+        localStorage.setItem('todos', JSON.stringify(arr));
         updateItem();
     }
-
-
 });
 
 
@@ -125,10 +117,10 @@ function updateItem() {
             var ul = document.getElementById('todoUl');
             var listItem = document.createElement('li');
             listItem.id = arr[i].itemId;
-            listItem.draggable=true;
-            listItem.setAttribute('ondragstart','dragstart_handler(event)');
-            listItem.setAttribute('ondragover','dragover_handler(event)');
-            listItem.setAttribute('ondrop','drop_handler(event)');
+            listItem.draggable = true;
+            listItem.setAttribute('ondragstart', 'dragstart_handler(event)');
+            listItem.setAttribute('ondragover', 'dragover_handler(event)');
+            listItem.setAttribute('ondrop', 'drop_handler(event)');
 
             var checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -181,30 +173,31 @@ function updateItem() {
 
 //dragging operations
 var index1;
+
 function dragstart_handler(ev) {
     start = ev.target.id;
 }
 
 function dragover_handler(ev) {
-   ev.preventDefault();
-   drop = ev.target.id;
+    ev.preventDefault();
+    drop = ev.target.id;
 }
 
 function drop_handler(ev) {
-    let startIndex =0;
-    let dropIndex =0;
+    let startIndex = 0;
+    let dropIndex = 0;
     var arr = JSON.parse(localStorage.getItem('todos'));
     for (var i = 0; i < arr.length; i++) {
-        if(arr[i].itemId == start){
-            startIndex =i;
+        if (arr[i].itemId == start) {
+            startIndex = i;
         }
-        if(arr[i].itemId == drop){
-            dropIndex =i;
+        if (arr[i].itemId == drop) {
+            dropIndex = i;
         }
     }
     var temp = arr[startIndex];
-    arr.splice(startIndex,1);
-    arr.splice(dropIndex,0,temp);
+    arr.splice(startIndex, 1);
+    arr.splice(dropIndex, 0, temp);
     localStorage.setItem('todos', JSON.stringify(arr));
     updateItem();
 }

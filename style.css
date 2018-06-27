@@ -17,11 +17,10 @@ li {
 }
 
 .todo-list {
-    width: 60%;
+    max-width: 100%;
     height: 90vh;
     background: #000;
-    overflow: scroll;
-    padding: 20px 30px;
+    padding: 20px 30%;
 }
 
 span {
@@ -32,7 +31,14 @@ span {
     text-decoration: line-through;
     font-weight: bold;
 }
-.completion{
-    background-color: rgb(121, 121, 121);
-    padding: 10px;
+
+.completion {
+    max-width: 100%;
+    background-color: rgb(77, 77, 77);
+    height: 20px;
+}
+
+.progress {
+    background-color: rgb(175, 172, 172);
+    padding: 1px;
 }
